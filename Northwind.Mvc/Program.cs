@@ -1,9 +1,21 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Northwind.Mvc.Data;
-using Packt.Shared;
+using Microsoft.AspNetCore.Identity; // IdentityUser
+using Microsoft.EntityFrameworkCore; // UseSqlServer, UseSqlite
+using Northwind.Mvc.Data; // ApplicationDbContext
+using Packt.Shared; // AddNorthwindContext extension method
+using System.Net.Http.Headers; // MediaTypeWithQualityHeaderValue
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient(name: "Northwind.WebApi",
+    configureClient: option =>
+    {
+        option.BaseAddress = new Uri("https://localhost:5002/");
+        option.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue(
+                "application/json", 1.0
+            )
+        );
+    });
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

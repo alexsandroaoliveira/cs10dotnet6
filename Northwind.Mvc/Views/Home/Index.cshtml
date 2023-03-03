@@ -40,19 +40,18 @@
                 {
                     currentItem = "";
                 }
-                 <div class="carousel-item @currentItem">
-                    <img class="d-block w-100" src="~/images/category@(Model.Categories[c].CategoryId).jpeg" 
+                <div class="carousel-item @currentItem">
+                    <img class="d-block w-100" src="~/images/category@(Model.Categories[c].CategoryId).jpeg"
                         alt="@Model.Categories[c].CategoryName" />
                     <div class="carousel-caption d-none d-md-block">
-                    <h2>@Model.Categories[c].CategoryName</h2>
-                    <h3>@Model.Categories[c].Description</h3>
-                    <p>
-                        <a class="btn btn-primary" 
-                            href="/Home/CategoryDetail/@Model.Categories[c].CategoryId">View</a>
-                    </p>
+                        <h2>@Model.Categories[c].CategoryName</h2>
+                        <h3>@Model.Categories[c].Description</h3>
+                        <p>
+                            <a class="btn btn-primary" href="/Home/CategoryDetail/@Model.Categories[c].CategoryId">View</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        }
+            }
         </div>
         <a class="carousel-control-prev" href="#categories" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -70,6 +69,11 @@
         <p class="lead">
             We have had @Model?.VisitorCount visitors this month.
         </p>
+        <h3>Query customer froma service</h3>
+        <form asp-action="Customers" method="get">
+            <input name="country" placeholder="Enter a contry" />
+            <input type="submit" />
+        </form>
         <h3>Query products by price</h3>
         <form asp-action="ProductsThatCostMoreThan" method="GET">
             <input name="price" placeholder="Enter a product price" />

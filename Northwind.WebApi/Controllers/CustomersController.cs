@@ -6,11 +6,11 @@ namespace Northwind.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CustomerController : ControllerBase
+public class CustomersController : ControllerBase
 {
     private readonly ICustomerRepository repo;
 
-    public CustomerController(ICustomerRepository repo)
+    public CustomersController(ICustomerRepository repo)
     {
         this.repo = repo;
     }
@@ -108,6 +108,18 @@ public class CustomerController : ControllerBase
     [ProducesResponseType(404)]
     public async Task<IActionResult> Delete(string id)
     {
+        if (id == "bad")
+        {
+            ProblemDetails problemDetails = new()
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "https://localhost:5001/customer/failed-to-delete",
+                Title = $"Customer ID {id} found but failed to delete.",
+                Detail = "More details like Company Name, Country and so on.",
+                Instance = HttpContext.Request.Path
+            };
+            return BadRequest(problemDetails);
+        }
         Customer? existing = await repo.RetrieveAsync(id);
         if (existing == null)
         {
