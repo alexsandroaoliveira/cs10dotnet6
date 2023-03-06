@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Northwind.Mvc.Models;
 using Packt.Shared;
 using Microsoft.EntityFrameworkCore;
+using Northwind.Common;
 
 namespace Northwind.Mvc.Controllers;
 
@@ -31,6 +32,24 @@ public class HomeController : Controller
         _logger.LogWarning("This is your first warning");
         _logger.LogWarning("Second warning");
         _logger.LogInformation("I am in the Index method of the HomeController.");
+
+        try
+        {
+            HttpClient client = clientFactory.CreateClient(
+                name: "Minimal.WebApi");
+
+            HttpRequestMessage request = new(
+                method: HttpMethod.Get, requestUri: "api/weather");
+
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            ViewData["weather"] = await response.Content.ReadFromJsonAsync<WeatherForecast[]>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning($"The Minimal.WebApi service is not responding. Exception: {ex.Message}");
+            ViewData["weather"] = Enumerable.Empty<WeatherForecast>().ToArray();
+        }
 
         HomeIndexViewModel model = new
         (

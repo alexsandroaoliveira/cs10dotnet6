@@ -17,6 +17,17 @@ builder.Services.AddHttpClient(name: "Northwind.WebApi",
         );
     });
 
+builder.Services.AddHttpClient(name: "Minimal.WebApi",
+    configureClient: options =>
+    {
+        options.BaseAddress = new Uri("https://localhost:5003/");
+        options.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue(
+                "application/json", 1.0
+            )
+        );
+    });
+
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

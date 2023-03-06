@@ -50,6 +50,9 @@ builder.Services.AddHttpLogging(options =>
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<NorthwindContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -82,6 +85,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseHealthChecks(path: "/howdoyoufeel");
+
+app.UseMiddleware<SecurityHeaders>();
 
 app.MapControllers();
 
